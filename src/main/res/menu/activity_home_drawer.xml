@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_notes"
+            android:title="Boom笔记"/>
+        <item
+            android:id="@+id/nav_community"
+            android:title="Boom社区"/>
+        <item
+            android:id="@+id/nav_errors_collection"
+            android:title="错题本"/>
+        <item
+            android:id="@+id/nav_work_and_rest"
+            android:title="劳逸结合区"/>
+        <item
+            android:id="@+id/nav_experience_exchange"
+            android:title="心得交流区"/>
+        <item
+            android:id="@+id/nav_pick_me_up"
+            android:title="带我飞"/>
+    </group>
+
+</menu>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="150dp"
+              android:background="@drawable/side_nav_bar"
+              android:orientation="vertical"
+              android:paddingTop="20dp"
+    >
+
+    <RelativeLayout
+        android:id="@+id/rl_user_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/iv_user_piv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/nav_header_margin"
+            android:src="@android:drawable/sym_def_app_icon"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/iv_user_piv"
+            android:layout_marginTop="15dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/user_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="昵称"
+                android:textSize="20sp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="称号等级"
+                android:textSize="16sp"/>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/rl_user_info"
+        android:layout_marginTop="10dp"
+        android:textSize="14sp"
+        android:layout_marginLeft="18dp"
+        android:hint="编辑个性签名"/>
+
+
+</LinearLayout>
