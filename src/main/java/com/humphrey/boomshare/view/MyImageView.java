@@ -1,0 +1,44 @@
+package com.humphrey.boomshare.view;
+
+import android.content.Context;
+import android.util.AttributeSet;
+import android.widget.ImageView;
+
+/**
+ * Created by Humphrey on 2016/3/25.
+ */
+public class MyImageView extends ImageView {
+
+    private OnMeasureListener onMeasureListener;
+
+    public void setOnMeasureListener(OnMeasureListener onMeasureListener){
+        this.onMeasureListener = onMeasureListener;
+    }
+
+    public MyImageView(Context context) {
+        super(context);
+    }
+
+    public MyImageView(Context context, AttributeSet attrs) {
+        super(context, attrs);
+    }
+
+    public MyImageView(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+    }
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+
+        if (onMeasureListener != null){
+            onMeasureListener.onMeasureSize(getMeasuredWidth(), getMeasuredHeight());
+        }
+    }
+
+    public interface OnMeasureListener{
+        public void onMeasureSize(int width, int height);
+    }
+
+
+}
