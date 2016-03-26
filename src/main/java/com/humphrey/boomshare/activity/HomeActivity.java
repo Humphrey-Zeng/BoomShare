@@ -16,6 +16,7 @@ import com.humphrey.boomshare.R;
 import com.humphrey.boomshare.fragment.CommunityFragment;
 import com.humphrey.boomshare.fragment.ErrorCollectionFragment;
 import com.humphrey.boomshare.fragment.ExperienceExchangeFragment;
+import com.humphrey.boomshare.fragment.HomePageFragment;
 import com.humphrey.boomshare.fragment.NotesFragment;
 import com.humphrey.boomshare.fragment.PickMeUpFragment;
 import com.humphrey.boomshare.fragment.WorkAndRestFragment;
@@ -29,12 +30,14 @@ public class HomeActivity extends AppCompatActivity
     private static final int NAV_WORK_AND_REST = 3;
     private static final int NAV_EXPERIENCE_EXCHANGE = 4;
     private static final int NAV_PICK_ME_UP = 5;
+    private static final int NAV_HOME_PAGE = 6;
     private static final String FRAGMENT_NOTES = "fragment_notes";
     private static final String FRAGMENT_COMMUNITY = "fragment_community";
     private static final String FRAGMENT_ERRORS_COLLECTION = "fragment_errors_collection";
     private static final String FRAGMENT_WORK_AND_REST = "fragment_work_and_rest";
     private static final String FRAGMENT_EXPERIENCE_EXCHANGE = "fragment_experience_exchange";
     private static final String FRAGMENT_PICK_ME_UP = "fragment_pick_me_up";
+    private static final String FRAGMENT_HOME_PAGE = "fragment_home_page";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +56,7 @@ public class HomeActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        initFragment(NAV_NOTES);
+        initFragment(NAV_HOME_PAGE);
     }
 
 
@@ -147,6 +150,8 @@ public class HomeActivity extends AppCompatActivity
             case NAV_PICK_ME_UP:
                 transaction.replace(R.id.fl_content, new PickMeUpFragment(), FRAGMENT_PICK_ME_UP);
                 break;
+            case NAV_HOME_PAGE:
+                transaction.replace(R.id.fl_content, new HomePageFragment(), FRAGMENT_HOME_PAGE);
         }
 
         transaction.commit();

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:padding="10dp">
 
     <FrameLayout
         android:id="@+id/fl_item_select_folder"
@@ -12,13 +13,14 @@
             android:id="@+id/group_image"
             android:layout_width="match_parent"
             android:layout_height="150dp"
-            android:background="@mipmap/bg_splash"
+            android:background="@mipmap/bg_folder"
             android:paddingBottom="30dp"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
             android:paddingTop="18dp"
             android:scaleType="fitXY"
-            android:src="@mipmap/ic_launcher"/>
+            android:src="@mipmap/ic_launcher"
+            />
 
         <TextView
             android:id="@+id/group_count"

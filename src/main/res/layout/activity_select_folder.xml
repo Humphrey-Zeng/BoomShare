@@ -6,13 +6,10 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="#ff0099cc">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:background="@android:color/darker_gray"
-            />
+
 
         <TextView
             android:layout_width="wrap_content"
@@ -42,6 +39,7 @@
         android:listSelector="@android:color/transparent"
         android:numColumns="2"
         android:stretchMode="columnWidth"
+        android:background="@android:color/darker_gray"
         android:verticalSpacing="20dp">
 
     </GridView>
