@@ -117,7 +117,19 @@ public class ChildAdapter extends BaseAdapter {
         return convertView;
     }
 
-  /*  private void addAnimation(View view) {
+    private void addAnimation(View view) {
+        float[] values = new float[]{0.5f, 0.6f, 0.7f, 0.8f, 0.9f, 1.0f, 1.1f, 1.2f, 1.3f, 1.25f,
+                1.2f, 1.15f, 1.1f, 1.0f};
+        com.nineoldandroids.animation.AnimatorSet set = new com.nineoldandroids.animation
+                .AnimatorSet();
+        set.playTogether(com.nineoldandroids.animation.ObjectAnimator.ofFloat(view, "scaleX",
+                values), com.nineoldandroids.animation.ObjectAnimator.ofFloat(view, "scaleY",
+                values));
+        set.setDuration(150);
+        set.start();
+    }
+
+   /* private void addAnimation(View view) {
         float[] values = new float[]{0.5f, 0.6f, 0.7f, 0.8f, 0.9f, 1.0f, 1.1f, 1.2f, 1.3f, 1.25f,
                 1.2f, 1.15f, 1.1f, 1.0f};
         AnimatorSet set = new AnimatorSet();

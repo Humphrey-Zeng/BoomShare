@@ -2,21 +2,18 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="10dp">
+                >
 
     <FrameLayout
         android:id="@+id/fl_item_select_folder"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:padding="3dp">
 
         <com.humphrey.boomshare.view.MyImageView
             android:id="@+id/photo_image"
             android:layout_width="match_parent"
             android:layout_height="150dp"
-            android:paddingBottom="30dp"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
-            android:paddingTop="18dp"
             android:scaleType="fitXY"
             android:src="@mipmap/ic_launcher"
             />
