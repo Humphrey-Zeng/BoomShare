@@ -1,7 +1,10 @@
 package com.humphrey.boomshare.activity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.GridView;
 
 import com.humphrey.boomshare.R;
@@ -25,6 +28,15 @@ public class SelectPictureActivity extends Activity {
 
         adapter = new ChildAdapter(this, list, mGridView);
         mGridView.setAdapter(adapter);
+
+        mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(SelectPictureActivity.this, PhotoViewActivity.class);
+                intent.putExtra("path", list.get(position));
+                startActivity(intent);
+            }
+        });
     }
 
 

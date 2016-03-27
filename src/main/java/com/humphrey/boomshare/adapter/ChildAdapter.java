@@ -96,6 +96,7 @@ public class ChildAdapter extends BaseAdapter {
         viewHolder.mCheckBox.setChecked(mSelectMap.containsKey(position) ? mSelectMap.get
                 (position) : false);
 
+
         Bitmap bitmap = NativeImageLoader.getInstance().loadNativeImage(path, mPoint, new
                 NativeImageLoader.NativeImageCallBack() {
 

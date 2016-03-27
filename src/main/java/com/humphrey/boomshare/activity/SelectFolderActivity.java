@@ -66,7 +66,7 @@ public class SelectFolderActivity extends Activity implements View.OnClickListen
             Map.Entry<String, List<String>> entry = it.next();
             ImageBean imageBean = new ImageBean();
             String key = entry.getKey();
-            List<String> value= entry.getValue();
+            List<String> value = entry.getValue();
             imageBean.setFolderName(key);
             imageBean.setImageCount(value.size());
             imageBean.setTopImagePath(value.get(0));
@@ -127,7 +127,7 @@ public class SelectFolderActivity extends Activity implements View.OnClickListen
                     } else {
                         mGroupMap.get(parentName).add(path);
                     }
-                   // System.out.println(parentName);
+                    // System.out.println(parentName);
                 }
                 mHandler.sendEmptyMessage(SCAN_OK);
                 cursor.close();
@@ -143,7 +143,7 @@ public class SelectFolderActivity extends Activity implements View.OnClickListen
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.btn_cancel_select_folder:
                 finish();
                 break;
