@@ -12,6 +12,8 @@ public class HomePageFragment extends BaseFragment {
     public View initViews() {
         View view = View.inflate(mActivity, R.layout.fragment_home_page, null);
 
+        mToolBar.setTitle("首页");
+
         return view;
     }
 }

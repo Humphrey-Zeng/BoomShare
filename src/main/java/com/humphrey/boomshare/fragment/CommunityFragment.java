@@ -12,6 +12,11 @@ public class CommunityFragment extends BaseFragment {
     public View initViews() {
         View view = View.inflate(mActivity, R.layout.fragment_community, null);
 
+        mToolBar.setTitle("社区");
+
+        mActivity.isOptionMenuShown = false;
+        mActivity.onPrepareOptionsMenu(mMenu);
+
         return view;
     }
 }

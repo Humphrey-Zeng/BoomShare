@@ -12,6 +12,8 @@ public class ErrorCollectionFragment extends BaseFragment {
     public View initViews() {
         View view = View.inflate(mActivity, R.layout.fragment_error_collection, null);
 
+        mToolBar.setTitle("错题本");
+
         return view;
     }
 }

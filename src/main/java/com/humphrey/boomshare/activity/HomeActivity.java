@@ -1,5 +1,6 @@
 package com.humphrey.boomshare.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -39,19 +40,26 @@ public class HomeActivity extends AppCompatActivity
     private static final String FRAGMENT_PICK_ME_UP = "fragment_pick_me_up";
     private static final String FRAGMENT_HOME_PAGE = "fragment_home_page";
 
+    private Toolbar toolbar;
+    private ActionBarDrawerToggle mToggle;
+    private DrawerLayout mDrawer;
+    private Menu mMenu;
+    public boolean isOptionMenuShown = true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("");
         setSupportActionBar(toolbar);
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string
+        mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mToggle = new ActionBarDrawerToggle(
+                this, mDrawer, toolbar, R.string.navigation_drawer_open, R.string
                 .navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
+        mDrawer.setDrawerListener(mToggle);
+        mToggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -73,7 +81,8 @@ public class HomeActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.home, menu);
+        getMenuInflater().inflate(R.menu.notes_option, menu);
+        mMenu = menu;
         return true;
     }
 
@@ -86,6 +95,11 @@ public class HomeActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            return true;
+        }
+        if (id == R.id.option_visit_camera){
+            Intent intent = new Intent(this, SelectFolderActivity.class);
+            startActivity(intent);
             return true;
         }
 
@@ -117,6 +131,8 @@ public class HomeActivity extends AppCompatActivity
             case R.id.nav_pick_me_up:
                 initFragment(NAV_PICK_ME_UP);
                 break;
+            case R.id.nav_home_page:
+                initFragment(NAV_HOME_PAGE);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -157,4 +173,32 @@ public class HomeActivity extends AppCompatActivity
         transaction.commit();
     }
 
+
+    public Toolbar getToolBar() {
+        return toolbar;
+    }
+
+    public ActionBarDrawerToggle getToggle() {
+        return mToggle;
+    }
+
+    public DrawerLayout getDrawer() {
+        return mDrawer;
+    }
+
+    public Menu getMenu() {
+        return mMenu;
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+
+        menu.clear();
+        if (!isOptionMenuShown) {
+            return false;
+        } else {
+            getMenuInflater().inflate(R.menu.notes_option, menu);
+            return true;
+        }
+    }
 }

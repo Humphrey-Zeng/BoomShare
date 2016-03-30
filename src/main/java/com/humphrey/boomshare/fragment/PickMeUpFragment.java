@@ -12,6 +12,8 @@ public class PickMeUpFragment extends BaseFragment {
     public View initViews() {
         View view = View.inflate(mActivity, R.layout.fragment_pick_me_up, null);
 
+        mToolBar.setTitle("带我飞");
+
         return view;
     }
 }

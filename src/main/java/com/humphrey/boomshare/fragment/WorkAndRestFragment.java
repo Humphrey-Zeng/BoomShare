@@ -12,6 +12,8 @@ public class WorkAndRestFragment extends BaseFragment {
     public View initViews() {
         View view = View.inflate(mActivity, R.layout.fragment_work_and_rest, null);
 
+        mToolBar.setTitle("劳逸结合区");
+
         return view;
     }
 }

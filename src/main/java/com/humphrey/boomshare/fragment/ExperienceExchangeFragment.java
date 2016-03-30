@@ -12,6 +12,8 @@ public class ExperienceExchangeFragment extends BaseFragment {
     public View initViews() {
         View view = View.inflate(mActivity, R.layout.fragment_experience_exchange, null);
 
+        mToolBar.setTitle("心得交流区");
+
         return view;
     }
 }

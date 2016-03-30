@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="BOOM笔记"
-        android:textSize="22sp"/>
+    >
 
-    <Button
-        android:id="@+id/btn_visit_camera"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="访问相册"
-        />
+    <GridView
+        android:id="@+id/notes_shelf"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:numColumns="3"
+        android:paddingTop="40dp"
+        android:paddingLeft="20dp"
+        android:verticalSpacing="60dp"
+        >
 
-</LinearLayout>
+    </GridView>
+
+</RelativeLayout>

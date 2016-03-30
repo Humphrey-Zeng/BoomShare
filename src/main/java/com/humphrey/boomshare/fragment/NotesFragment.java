@@ -10,15 +10,17 @@ import com.humphrey.boomshare.activity.SelectFolderActivity;
 /**
  * Created by Humphrey on 2016/3/23.
  */
-public class NotesFragment extends BaseFragment implements View.OnClickListener {
+public class NotesFragment extends BaseFragment{
 
     private Button btnVisitCamera;
+
     @Override
     public View initViews() {
         View view = View.inflate(mActivity, R.layout.fragment_notes, null);
 
-        btnVisitCamera = (Button) view.findViewById(R.id.btn_visit_camera);
-        btnVisitCamera.setOnClickListener(this);
+        mToolBar.setTitle("笔记");
+        mActivity.isOptionMenuShown = true;
+        mActivity.onPrepareOptionsMenu(mMenu);
 
         return view;
     }
@@ -26,15 +28,5 @@ public class NotesFragment extends BaseFragment implements View.OnClickListener 
     @Override
     public void initData() {
 
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.btn_visit_camera:
-                Intent intent = new Intent(mActivity, SelectFolderActivity.class);
-                startActivity(intent);
-                break;
-        }
     }
 }

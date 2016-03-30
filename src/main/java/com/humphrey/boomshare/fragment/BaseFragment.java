@@ -1,25 +1,38 @@
 package com.humphrey.boomshare.fragment;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.humphrey.boomshare.activity.HomeActivity;
 
 /**
  * Created by Humphrey on 2016/3/23.
  */
 public abstract class BaseFragment extends Fragment {
 
-    public Activity mActivity;
+    public HomeActivity mActivity;
+    public Toolbar mToolBar;
+    public ActionBarDrawerToggle mToggle;
+    public DrawerLayout mDrawer;
+    public Menu mMenu;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mActivity = getActivity();
+        mActivity = (HomeActivity) getActivity();
+        mToolBar = mActivity.getToolBar();
+        mToggle = mActivity.getToggle();
+        mDrawer = mActivity.getDrawer();
+        mMenu = mActivity.getMenu();
     }
 
     @Nullable
