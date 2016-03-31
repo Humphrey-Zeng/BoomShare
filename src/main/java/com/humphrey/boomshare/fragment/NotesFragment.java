@@ -6,6 +6,9 @@ import android.widget.Button;
 
 import com.humphrey.boomshare.R;
 import com.humphrey.boomshare.activity.SelectFolderActivity;
+import com.humphrey.boomshare.database.NotesDetailInfoDAO;
+
+import java.util.List;
 
 /**
  * Created by Humphrey on 2016/3/23.
@@ -27,6 +30,9 @@ public class NotesFragment extends BaseFragment{
 
     @Override
     public void initData() {
-
+//        NotesDetailInfoDAO dao = new NotesDetailInfoDAO(mActivity);
+//        List<byte[]> list = dao.findNotePicturesByName("kk");
+//
+//        System.out.println(list);
     }
 }

@@ -3,7 +3,11 @@ package com.humphrey.boomshare.activity;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
@@ -17,7 +21,15 @@ import android.widget.Toast;
 
 import com.humphrey.boomshare.R;
 import com.humphrey.boomshare.adapter.ChildAdapter;
+import com.humphrey.boomshare.bean.NoteDetailInfo;
+import com.humphrey.boomshare.bean.NoteInfo;
+import com.humphrey.boomshare.database.NotesDetailInfoDAO;
+import com.humphrey.boomshare.database.NotesInfoDAO;
+import com.humphrey.boomshare.utils.SharedPreferencesUtils;
+import com.lidroid.xutils.BitmapUtils;
 
+import java.io.ByteArrayOutputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,6 +42,13 @@ public class SelectPictureActivity extends Activity implements View.OnClickListe
     private static int mCount;
     private Button tvSelectPictureOK;
     private Button tvSelectPictureCancel;
+
+    private Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            finish();
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,15 +97,19 @@ public class SelectPictureActivity extends Activity implements View.OnClickListe
     }
 
     private void showNotesInfoDialog() {
+        final NotesInfoDAO dao = new NotesInfoDAO(this);
+
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         final AlertDialog dialog = builder.create();
         View view = View.inflate(this, R.layout.dialog_notes_info, null);
+
         dialog.setView(view);
+
 
         Button btnDialogOK = (Button) view.findViewById(R.id.btn_dialog_notes_info_ok);
         Button btnDialogCancel = (Button) view.findViewById(R.id.btn_dialog_notes_info_cancel);
         final EditText etNotesName = (EditText) view.findViewById(R.id.et_dialog_notes_name);
-        Spinner spinner = (Spinner) view.findViewById(R.id.spinner_dialog_notes_type);
+        final Spinner spinner = (Spinner) view.findViewById(R.id.spinner_dialog_notes_type);
 
         btnDialogCancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -102,13 +125,50 @@ public class SelectPictureActivity extends Activity implements View.OnClickListe
                 if (TextUtils.isEmpty(notesName)) {
                     Toast.makeText(SelectPictureActivity.this, "笔记名称不能为空", Toast.LENGTH_SHORT)
                             .show();
-                }else{
+                } else if (dao.findName(notesName)) {
+                    Toast.makeText(SelectPictureActivity.this, "该名称已存在", Toast.LENGTH_SHORT)
+                            .show();
+                } else {
+                    NoteInfo info = new NoteInfo();
+                    info.setName(notesName);
+                    info.setType((String) spinner.getSelectedItem());
+                    dao.add(info);
                     dialog.dismiss();
-                    finish();
+                    addNote(notesName);
                 }
             }
         });
 
         dialog.show();
+    }
+
+    private void addNote(String noteName) {
+        final String name = noteName;
+        final NotesDetailInfoDAO dao = new NotesDetailInfoDAO(this);
+
+        new Thread(){
+            @Override
+            public void run() {
+
+                for (int i = 0; i < selectList.size(); i++) {
+                    NoteDetailInfo info = new NoteDetailInfo();
+                    info.setName(name);
+                    info.setIndex(i + 1);
+                    String path = selectList.get(i);
+                    
+//                    BitmapUtils bitmapUtils = new BitmapUtils(SelectPictureActivity.this);
+//                    Bitmap bitmap = bitmapUtils.getBitmapFromMemCache(path, null);
+
+
+//                    ByteArrayOutputStream os = new ByteArrayOutputStream();
+//                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, os);
+//                    info.setPicture(os.toByteArray());
+//                    System.out.println(os.toByteArray());
+//
+//                    dao.add(info);
+                }
+                handler.sendEmptyMessage(0);
+            }
+        }.start();
     }
 }
