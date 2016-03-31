@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="notes_type">
+        <item>日常笔记</item>
+        <item>随笔</item>
+        <item>错题本</item>
+    </string-array>
+</resources>
