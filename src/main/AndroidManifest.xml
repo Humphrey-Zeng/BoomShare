@@ -26,6 +26,8 @@
         </activity>
         <activity android:name=".activity.PhotoViewActivity">
         </activity>
+        <activity android:name=".activity.NoteViewActivity">
+        </activity>
     </application>
 
 </manifest>

@@ -2,17 +2,17 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-
     >
 
     <GridView
-        android:id="@+id/notes_shelf"
+        android:id="@+id/gv_notes_shelf"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:numColumns="3"
-        android:paddingTop="40dp"
-        android:paddingLeft="20dp"
+        android:paddingLeft="15dp"
+        android:paddingTop="20dp"
         android:verticalSpacing="60dp"
+        android:horizontalSpacing="20dp"
         >
 
     </GridView>
