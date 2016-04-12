@@ -1,27 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.DrawerLayout
-    android:id="@+id/drawer_layout"
+<RelativeLayout
+    android:id="@+id/rl_home"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    tools:openDrawer="start">
+    >
 
     <include
         layout="@layout/app_bar_home"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
-    <android.support.design.widget.NavigationView
-        android:id="@+id/nav_view"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:fitsSystemWindows="true"
-        app:headerLayout="@layout/nav_header_home"
-        app:menu="@menu/activity_home_drawer"
-        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="1dp"
+        android:orientation="horizontal">
 
-</android.support.v4.widget.DrawerLayout>
+        <ImageView
+            android:id="@+id/btn_tab_home"
+            style="@style/BottomTabStyle"
+            android:src="@drawable/btn_tab_home"
+            />
+
+        <ImageView
+            android:id="@+id/btn_tab_send"
+            style="@style/BottomTabStyle"
+            android:src="@drawable/btn_tab_send"
+            />
+
+        <ImageView
+            android:id="@+id/btn_tab_personal"
+            style="@style/BottomTabStyle"
+            android:src="@drawable/btn_tab_personal"
+            />
+
+        <ImageView
+            android:id="@+id/btn_tab_setting"
+            style="@style/BottomTabStyle"
+            android:src="@drawable/btn_tab_setting"
+            />
+
+
+    </LinearLayout>
+
+
+</RelativeLayout>

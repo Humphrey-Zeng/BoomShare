@@ -30,8 +30,6 @@ public abstract class BaseFragment extends Fragment {
 
         mActivity = (HomeActivity) getActivity();
         mToolBar = mActivity.getToolBar();
-        mToggle = mActivity.getToggle();
-        mDrawer = mActivity.getDrawer();
         mMenu = mActivity.getMenu();
     }
 

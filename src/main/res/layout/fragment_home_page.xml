@@ -1,13 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+    >
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="首页"
-        android:textSize="22sp"/>
+        android:orientation="horizontal"
+        >
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/btn_home_notes"
+            style="@style/FactorButtonStyle"
+            android:layout_width="10dp"
+            android:background="@drawable/btn_home_notes"
+            android:text="笔记本"
+            />
+
+        <TextView
+            android:id="@+id/btn_home_err_collection"
+            style="@style/FactorButtonStyle"
+            android:layout_width="10dp"
+            android:background="@drawable/btn_home_err_collection"
+            android:text="错题本"
+            />
+
+        <TextView
+            android:id="@+id/btn_home_community"
+            style="@style/FactorButtonStyle"
+            android:background="@drawable/btn_home_community"
+            android:text="社区"
+            />
+
+        <TextView
+            android:id="@+id/btn_home_work_and_rest"
+            style="@style/FactorButtonStyle"
+            android:background="@drawable/btn_home_work_and_rest"
+            android:text="娱乐"
+            />
+
+    </LinearLayout>
+
+</RelativeLayout>

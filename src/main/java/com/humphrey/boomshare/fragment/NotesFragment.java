@@ -101,24 +101,27 @@ public class NotesFragment extends BaseFragment {
                 viewholder = new ViewHolder();
                 convertView = LayoutInflater.from(mActivity).inflate(R.layout.item_notes_shelf,
                         null);
-                viewholder.rlNoteCover = (RelativeLayout) convertView.findViewById(R.id
-                        .rl_item_notes_cover);
 
                 viewholder.tvNoteName = (TextView) convertView.findViewById(R.id.tv_notes_name);
+                viewholder.ivNoteCover = (ImageView) convertView.findViewById(R.id.iv_notes_cover);
 
                 convertView.setTag(viewholder);
             } else {
                 viewholder = (ViewHolder) convertView.getTag();
             }
 
+
             viewholder.tvNoteName.setText(getItem(position).getName());
+            viewholder.ivNoteCover.setBackgroundResource(R.drawable.cover);
 
             return convertView;
         }
     }
 
     static class ViewHolder {
-        private RelativeLayout rlNoteCover;
         private TextView tvNoteName;
+        private ImageView ivNoteCover;
     }
+
+
 }

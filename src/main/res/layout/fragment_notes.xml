@@ -1,20 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
     >
 
     <GridView
         android:id="@+id/gv_notes_shelf"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:numColumns="3"
-        android:paddingLeft="15dp"
-        android:paddingTop="20dp"
-        android:verticalSpacing="60dp"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:horizontalSpacing="20dp"
+        android:numColumns="3"
+        android:verticalSpacing="20dp"
+        android:gravity="center"
+        android:columnWidth="70dp"
+        android:stretchMode="columnWidth"
         >
 
     </GridView>
 
-</RelativeLayout>
+</LinearLayout>
