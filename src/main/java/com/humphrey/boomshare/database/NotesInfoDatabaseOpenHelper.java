@@ -17,7 +17,7 @@ public class NotesInfoDatabaseOpenHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("create table notesinfos(_id integer primary key autoincrement, name varchar" +
                 "(20), " +
-                "type varchar(20))");
+                "type varchar(20), picIndex integer)");
     }
 
     @Override

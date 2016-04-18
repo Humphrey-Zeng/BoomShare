@@ -2,6 +2,7 @@ package com.humphrey.boomshare.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.design.widget.NavigationView;
@@ -85,7 +86,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.notes_option, menu);
         mMenu = menu;
-        return true;
+        return false;
     }
 
     @Override
@@ -96,12 +97,14 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
         if (id == R.id.option_visit_camera) {
             Intent intent = new Intent(this, SelectFolderActivity.class);
             startActivity(intent);
+            return true;
+        }
+        if (id == R.id.option_edit){
+            NotesFragment fragment = getNotesFragment();
+            fragment.editNotes();
             return true;
         }
 
@@ -141,6 +144,13 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 //        drawer.closeDrawer(GravityCompat.START);
 //        return true;
 //    }
+
+    public NotesFragment getNotesFragment(){
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        NotesFragment fragment = (NotesFragment) fragmentManager.findFragmentByTag(FRAGMENT_NOTES);
+
+        return fragment;
+    }
 
     public void initFragment(int factorID) {
         FragmentManager fm = getSupportFragmentManager();
@@ -201,6 +211,10 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         switch (v.getId()) {
             case R.id.btn_tab_home:
                 initFragment(NAV_HOME_PAGE);
+
+                isOptionMenuShown = false;
+                onPrepareOptionsMenu(mMenu);
+
                 isHomepage = true;
                 break;
             case R.id.btn_tab_send:
@@ -218,6 +232,10 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             super.onBackPressed();
         } else {
             initFragment(NAV_HOME_PAGE);
+
+            isOptionMenuShown = false;
+            onPrepareOptionsMenu(mMenu);
+
             isHomepage = true;
             isNotesFragment = false;
         }

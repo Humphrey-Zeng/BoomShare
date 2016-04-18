@@ -27,6 +27,7 @@ public class NotesInfoDAO {
         ContentValues value = new ContentValues();
         value.put("name", info.getName());
         value.put("type", info.getType());
+        value.put("picIndex", 1);
 
         db.insert("notesinfos", null, value);
     }
@@ -40,13 +41,14 @@ public class NotesInfoDAO {
         ContentValues values = new ContentValues();
         values.put("name", updateInfo.getName());
         values.put("type", updateInfo.getType());
+        values.put("picIndex", updateInfo.getPicIndex());
 
         db.update("notesinfos", values, "name = ?", new String[]{preInfo.getName()});
     }
 
     public List<NoteInfo> findAll() {
-        Cursor cursor = db.query("notesinfos", new String[]{"name", "type"}, null, null, null, null,
-                null, null);
+        Cursor cursor = db.query("notesinfos", new String[]{"name", "type", "picIndex"}, null, null, null, null,
+                "picIndex ASC", null);
 
         List<NoteInfo> list = new ArrayList<NoteInfo>();
         while (cursor.moveToNext()) {

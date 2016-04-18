@@ -22,6 +22,7 @@ public class HomePageFragment extends BaseFragment implements View.OnClickListen
 
         mToolBar.setTitle("首页");
 
+
         btnNotes = (TextView) view.findViewById(R.id.btn_home_notes);
         btnCommunity = (TextView) view.findViewById(R.id.btn_home_community);
         btnErrCollection = (TextView) view.findViewById(R.id.btn_home_err_collection);
@@ -59,5 +60,10 @@ public class HomePageFragment extends BaseFragment implements View.OnClickListen
                 mActivity.isNotesFragment = false;
                 break;
         }
+    }
+
+    @Override
+    public void initData() {
+
     }
 }

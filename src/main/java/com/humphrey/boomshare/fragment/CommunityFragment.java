@@ -14,9 +14,6 @@ public class CommunityFragment extends BaseFragment {
 
         mToolBar.setTitle("社区");
 
-        mActivity.isOptionMenuShown = false;
-        mActivity.onPrepareOptionsMenu(mMenu);
-
         return view;
     }
 }

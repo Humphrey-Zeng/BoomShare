@@ -11,13 +11,16 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.humphrey.boomshare.R;
 import com.humphrey.boomshare.activity.NoteViewActivity;
+import com.humphrey.boomshare.adapter.DragAdapter;
 import com.humphrey.boomshare.bean.NoteInfo;
 import com.humphrey.boomshare.database.NotesInfoDAO;
+import com.humphrey.boomshare.view.DragGridView;
 
 import java.io.File;
 import java.util.List;
@@ -27,15 +30,22 @@ import static com.humphrey.boomshare.utils.GlobalUtils.getNotePicturesFolderPath
 /**
  * Created by Humphrey on 2016/3/23.
  */
-public class NotesFragment extends BaseFragment {
+public class NotesFragment extends BaseFragment implements View.OnClickListener {
 
     private List<NoteInfo> notesInfoList;
-    private GridView gvNotesShelf;
+    private DragGridView gvNotesShelf;
+    private DragAdapter adapter;
+    private LinearLayout llNoteEdit;
+    private Button btnNoteDelete;
+    private Button btnNoteChangeCover;
+    private Button btnNoteCancel;
+    public boolean isEdited;
 
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            gvNotesShelf.setAdapter(new NotesShelfAdapter());
+            adapter = new DragAdapter(mActivity, notesInfoList);
+            gvNotesShelf.setAdapter(adapter);
 
             gvNotesShelf.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
@@ -52,11 +62,21 @@ public class NotesFragment extends BaseFragment {
     public View initViews() {
         View view = View.inflate(mActivity, R.layout.fragment_notes, null);
 
-        gvNotesShelf = (GridView) view.findViewById(R.id.gv_notes_shelf);
+        gvNotesShelf = (DragGridView) view.findViewById(R.id.gv_notes_shelf);
+        llNoteEdit = (LinearLayout) view.findViewById(R.id.ll_note_edit);
+        btnNoteDelete = (Button) view.findViewById(R.id.btn_note_delete);
+        btnNoteChangeCover = (Button) view.findViewById(R.id.btn_note_change_cover);
+        btnNoteCancel = (Button) view.findViewById(R.id.btn_note_cancel);
+
+        btnNoteDelete.setOnClickListener(this);
+        btnNoteChangeCover.setOnClickListener(this);
+        btnNoteCancel.setOnClickListener(this);
 
         mToolBar.setTitle("笔记");
         mActivity.isOptionMenuShown = true;
         mActivity.onPrepareOptionsMenu(mMenu);
+
+        isEdited = false;
 
         return view;
     }
@@ -76,52 +96,53 @@ public class NotesFragment extends BaseFragment {
         }.start();
     }
 
-    class NotesShelfAdapter extends BaseAdapter {
 
-        @Override
-        public int getCount() {
-            return notesInfoList.size();
-        }
-
-        @Override
-        public NoteInfo getItem(int position) {
-            return notesInfoList.get(position);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            ViewHolder viewholder;
-
-            if (convertView == null) {
-                viewholder = new ViewHolder();
-                convertView = LayoutInflater.from(mActivity).inflate(R.layout.item_notes_shelf,
-                        null);
-
-                viewholder.tvNoteName = (TextView) convertView.findViewById(R.id.tv_notes_name);
-                viewholder.ivNoteCover = (ImageView) convertView.findViewById(R.id.iv_notes_cover);
-
-                convertView.setTag(viewholder);
-            } else {
-                viewholder = (ViewHolder) convertView.getTag();
-            }
-
-
-            viewholder.tvNoteName.setText(getItem(position).getName());
-            viewholder.ivNoteCover.setBackgroundResource(R.drawable.cover);
-
-            return convertView;
-        }
-    }
-
-    static class ViewHolder {
-        private TextView tvNoteName;
-        private ImageView ivNoteCover;
+    public void editNotes() {
+        isEdited = true;
+        adapter.notifyDataSetChanged();
+        llNoteEdit.setVisibility(View.VISIBLE);
     }
 
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.btn_note_delete:
+                deleteSelectedNote(adapter.selectNoteList);
+                adapter.selectNoteList.clear();
+                break;
+            case R.id.btn_note_change_cover:
+                break;
+            case R.id.btn_note_cancel:
+                break;
+        }
+        isEdited = false;
+        llNoteEdit.setVisibility(View.GONE);
+        adapter.notifyDataSetChanged();
+    }
+
+    private void deleteSelectedNote(List<String> list) {
+        NotesInfoDAO dao = new NotesInfoDAO(mActivity);
+
+        for (int i = 0; i < list.size(); i++){
+            String name = list.get(i);
+            NoteInfo info = new NoteInfo();
+            info.setName(name);
+            dao.delete(info);
+            deleteNotePictureInNative(name);
+        }
+
+        initData();
+    }
+
+    private void deleteNotePictureInNative(String name) {
+        String path = getNotePicturesFolderPath(name);
+        File parentFile = new File(path);
+        final File[] childFiles = parentFile.listFiles();
+
+        for (int i = 0; i < childFiles.length; i++){
+            childFiles[i].delete();
+        }
+        parentFile.delete();
+    }
 }
