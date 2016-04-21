@@ -23,4 +23,11 @@ public class GlobalUtils {
 
         return path;
     }
+
+    public static String getNoteCoverFolderPath(){
+
+        String path = getNotePicturesFolderPath("Boom笔记封面");
+
+        return path;
+    }
 }

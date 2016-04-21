@@ -19,7 +19,7 @@
             android:paddingRight="40dp"
             android:paddingTop="23dp"
             android:scaleType="fitXY"
-            android:src="@mipmap/ic_launcher"
+            android:src="@mipmap/bg_default"
             />
 
         <TextView

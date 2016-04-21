@@ -1,6 +1,13 @@
 package com.humphrey.boomshare.adapter;
 
+import android.annotation.TargetApi;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Point;
+import android.os.Build;
+import android.os.Handler;
+import android.os.Message;
+import android.util.LruCache;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,13 +21,22 @@ import com.humphrey.boomshare.R;
 import com.humphrey.boomshare.activity.HomeActivity;
 import com.humphrey.boomshare.bean.NoteInfo;
 import com.humphrey.boomshare.database.NotesInfoDAO;
+import com.humphrey.boomshare.utils.CacheUtils;
+import com.humphrey.boomshare.utils.NativeImageLoader;
+import com.humphrey.boomshare.view.DragGridView;
 import com.humphrey.boomshare.view.DragGridViewInterface;
+import com.humphrey.boomshare.view.MyImageView;
+import com.squareup.picasso.Picasso;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static com.humphrey.boomshare.utils.GlobalUtils.getNoteCoverFolderPath;
 
 /**
  * Created by Humphrey on 2016/4/18.
@@ -28,21 +44,33 @@ import java.util.Map;
 public class DragAdapter extends BaseAdapter implements DragGridViewInterface {
 
     private List<NoteInfo> list;
-    private Map<String, Integer> map = new HashMap<String, Integer>();
+    private Map<String, Integer> map = new HashMap<>();
     private LayoutInflater mInflater;
     private int mHidePosition = -1;
     private HomeActivity mActivity;
     public List<String> selectNoteList;
+    private DragGridView mDragGridView;
+    private Point mPoint = new Point(0, 0);
+    private Bitmap mBitmap;
 
-    public DragAdapter(Context context, List<NoteInfo> list) {
+    private Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            ImageView imageView = (ImageView) msg.obj;
+            imageView.setImageBitmap(mBitmap);
+        }
+    };
+
+    public DragAdapter(Context context, List<NoteInfo> list, DragGridView gvNotesShelf) {
         this.list = list;
         mInflater = LayoutInflater.from(context);
         mActivity = (HomeActivity) context;
+        this.mDragGridView = gvNotesShelf;
 
-        for (int i = 0; i < list.size(); i++){
+        for (int i = 0; i < list.size(); i++) {
             map.put(list.get(i).getName(), list.get(i).getPicIndex());
         }
-        selectNoteList = new ArrayList<String>();
+        selectNoteList = new ArrayList<>();
     }
 
     @Override
@@ -62,26 +90,78 @@ public class DragAdapter extends BaseAdapter implements DragGridViewInterface {
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
+        String bitmapPath = getNoteCoverFolderPath() + "/" + list.get(position).getName();
+
         convertView = mInflater.inflate(R.layout.item_notes_shelf, null);
 
-        ImageView ivNoteCover = (ImageView) convertView.findViewById(R.id.iv_notes_cover);
+        MyImageView ivNoteCover = (MyImageView) convertView.findViewById(R.id.iv_notes_cover);
+
+        ivNoteCover.setOnMeasureListener(new MyImageView.OnMeasureListener() {
+            @Override
+            public void onMeasureSize(int width, int height) {
+                mPoint.set(width, height);
+            }
+        });
+        ivNoteCover.setTag(bitmapPath);
+
         TextView tvNoteName = (TextView) convertView.findViewById(R.id.tv_notes_name);
         CheckBox cbNoteSelect = (CheckBox) convertView.findViewById(R.id.cb_note_select);
 
         tvNoteName.setText(list.get(position).getName());
-        ivNoteCover.setBackgroundResource(R.drawable.cover);
-        if (mActivity.getNotesFragment().isEdited == false){
+
+        String path = getNoteCoverFolderPath();
+        File coverFile = new File(path, list.get(position).getName());
+        if (coverFile.exists()) {
+            Bitmap bitmap = NativeImageLoader.getInstance().loadNativeImage(bitmapPath, mPoint, new
+                    NativeImageLoader.NativeImageCallBack() {
+
+                @Override
+                public void onImageLoader(Bitmap bitmap, String path) {
+                    ImageView mImageView = (ImageView) mDragGridView.findViewWithTag(path);
+                    if (bitmap != null && mImageView != null) {
+                        mImageView.setImageBitmap(bitmap);
+                    }
+                }
+            });
+            if (bitmap != null){
+                ivNoteCover.setImageBitmap(bitmap);
+            }else{
+                ivNoteCover.setImageResource(R.drawable.cover);
+            }
+//            if (bitmap == null){
+//                new Thread(){
+//                    @Override
+//                    public void run() {
+//                        try {
+//                            mBitmap = Picasso.with(mActivity).load(coverFile).get();
+//                            CacheUtils.getInstance().addBitmapWithPathToCache(path, mBitmap);
+//
+//                            Message msg = mHandler.obtainMessage();
+//                            msg.obj = ivNoteCover;
+//                            mHandler.sendMessage(msg);
+//                        } catch (IOException e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//                };
+//            }
+        } else {
+            ivNoteCover.setImageResource(R.drawable.cover);
+        }
+
+
+        if (mActivity.getNotesFragment().isEdited == false) {
             cbNoteSelect.setVisibility(View.GONE);
-        }else{
+        } else {
             cbNoteSelect.setVisibility(View.VISIBLE);
             cbNoteSelect.setFocusable(true);
 
             cbNoteSelect.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if (isChecked){
+                    if (isChecked) {
                         selectNoteList.add(list.get(position).getName());
-                    }else{
+                    } else {
                         selectNoteList.remove(list.get(position).getName());
                     }
                 }
@@ -118,8 +198,8 @@ public class DragAdapter extends BaseAdapter implements DragGridViewInterface {
         this.mHidePosition = hidePosition;
         notifyDataSetChanged();
 
-        for (int i = 0; i < list.size(); i++){
-            if (i != map.get(list.get(i).getName())){
+        for (int i = 0; i < list.size(); i++) {
+            if (i != map.get(list.get(i).getName())) {
                 NoteInfo preInfo = list.get(i);
                 NoteInfo updateInfo = list.get(i);
 

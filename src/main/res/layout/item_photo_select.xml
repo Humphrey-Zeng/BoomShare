@@ -15,19 +15,24 @@
             android:layout_width="match_parent"
             android:layout_height="150dp"
             android:scaleType="fitXY"
-            android:src="@mipmap/ic_launcher"
+            android:src="@mipmap/bg_default"
             />
 
 
     </FrameLayout>
 
+
     <CheckBox
         android:id="@+id/cb_photo_select"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="3dp"
+        android:layout_marginTop="3dp"
+        android:background="@drawable/cb_item_selector"
+        android:button="@null"
         android:focusable="false"
-        android:padding="20dp"
         />
 
     <TextView

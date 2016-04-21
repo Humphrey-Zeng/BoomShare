@@ -1,7 +1,5 @@
 package com.humphrey.boomshare.adapter;
 
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Point;
@@ -23,11 +21,7 @@ import com.humphrey.boomshare.view.MyImageView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * Created by Humphrey on 2016/3/26.
@@ -90,7 +84,7 @@ public class ChildAdapter extends BaseAdapter {
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
-            viewHolder.mImageView.setImageResource(R.mipmap.ic_launcher);
+            viewHolder.mImageView.setImageResource(R.mipmap.bg_default);
         }
 
         viewHolder.mImageView.setTag(path);
@@ -150,7 +144,7 @@ public class ChildAdapter extends BaseAdapter {
         if (bitmap != null) {
             viewHolder.mImageView.setImageBitmap(bitmap);
         } else {
-            viewHolder.mImageView.setImageResource(R.mipmap.ic_launcher);
+            viewHolder.mImageView.setImageResource(R.mipmap.bg_default);
         }
 
         return convertView;

@@ -1,6 +1,7 @@
 package com.humphrey.boomshare.fragment;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.LayoutInflater;
@@ -16,6 +17,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.humphrey.boomshare.R;
+import com.humphrey.boomshare.activity.CoverChangeActivity;
 import com.humphrey.boomshare.activity.NoteViewActivity;
 import com.humphrey.boomshare.adapter.DragAdapter;
 import com.humphrey.boomshare.bean.NoteInfo;
@@ -23,8 +25,10 @@ import com.humphrey.boomshare.database.NotesInfoDAO;
 import com.humphrey.boomshare.view.DragGridView;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
+import static com.humphrey.boomshare.utils.GlobalUtils.getNoteCoverFolderPath;
 import static com.humphrey.boomshare.utils.GlobalUtils.getNotePicturesFolderPath;
 
 /**
@@ -44,7 +48,7 @@ public class NotesFragment extends BaseFragment implements View.OnClickListener 
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            adapter = new DragAdapter(mActivity, notesInfoList);
+            adapter = new DragAdapter(mActivity, notesInfoList, gvNotesShelf);
             gvNotesShelf.setAdapter(adapter);
 
             gvNotesShelf.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -106,16 +110,20 @@ public class NotesFragment extends BaseFragment implements View.OnClickListener 
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.btn_note_delete:
                 deleteSelectedNote(adapter.selectNoteList);
-                adapter.selectNoteList.clear();
                 break;
             case R.id.btn_note_change_cover:
+                Intent intent = new Intent(mActivity, CoverChangeActivity.class);
+                intent.putStringArrayListExtra("coverList", (ArrayList<String>) adapter
+                        .selectNoteList);
+                startActivity(intent);
                 break;
             case R.id.btn_note_cancel:
                 break;
         }
+        adapter.selectNoteList.clear();
         isEdited = false;
         llNoteEdit.setVisibility(View.GONE);
         adapter.notifyDataSetChanged();
@@ -124,12 +132,13 @@ public class NotesFragment extends BaseFragment implements View.OnClickListener 
     private void deleteSelectedNote(List<String> list) {
         NotesInfoDAO dao = new NotesInfoDAO(mActivity);
 
-        for (int i = 0; i < list.size(); i++){
+        for (int i = 0; i < list.size(); i++) {
             String name = list.get(i);
             NoteInfo info = new NoteInfo();
             info.setName(name);
             dao.delete(info);
             deleteNotePictureInNative(name);
+            deleteNoteCoverInNative(name);
         }
 
         initData();
@@ -140,9 +149,16 @@ public class NotesFragment extends BaseFragment implements View.OnClickListener 
         File parentFile = new File(path);
         final File[] childFiles = parentFile.listFiles();
 
-        for (int i = 0; i < childFiles.length; i++){
+        for (int i = 0; i < childFiles.length; i++) {
             childFiles[i].delete();
         }
         parentFile.delete();
     }
+
+    private void deleteNoteCoverInNative(String name) {
+        String path = getNoteCoverFolderPath();
+        File coverFile = new File(path, name);
+        coverFile.delete();
+    }
+
 }

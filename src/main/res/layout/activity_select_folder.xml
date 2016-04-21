@@ -6,9 +6,8 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#ff0099cc">
-
+        android:layout_height="60dp"
+        android:background="@mipmap/tap_album">
 
 
         <TextView
@@ -20,11 +19,13 @@
 
         <Button
             android:id="@+id/btn_cancel_select_folder"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="5dp"
-            android:text="取消"/>
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="5dp"
+            android:layout_centerVertical="true"
+            android:background="@mipmap/back_album"
+            />
 
     </RelativeLayout>
 
@@ -38,7 +39,7 @@
         android:listSelector="@android:color/transparent"
         android:numColumns="2"
         android:stretchMode="columnWidth"
-        android:background="#E1E0DE"
+        android:background="@mipmap/bg_album"
         android:verticalSpacing="20dp">
 
     </GridView>

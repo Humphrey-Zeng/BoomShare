@@ -22,7 +22,7 @@ public class NativeImageLoader {
     private ExecutorService mImageThreadPool = Executors.newFixedThreadPool(1);
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR1)
-    private NativeImageLoader() {
+    public NativeImageLoader() {
         final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
         final int cacheSize = maxMemory / 4;
         mMemoryCache = new LruCache<String, Bitmap>(cacheSize) {
@@ -43,7 +43,7 @@ public class NativeImageLoader {
 
     public Bitmap loadNativeImage(final String path, final Point mPoint, final
     NativeImageCallBack mCallBack) {
-        Bitmap bitmap = getBitmapFromMemCache(path);
+        final Bitmap bitmap = getBitmapFromMemCache(path);
 
         final Handler mHandler = new Handler() {
             @Override
@@ -100,12 +100,14 @@ public class NativeImageLoader {
         return inSampleSize;
     }
 
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR1)
     private void addBitmapToMemoryCache(String key, Bitmap bitmap) {
         if (getBitmapFromMemCache(key) == null && bitmap != null) {
             mMemoryCache.put(key, bitmap);
         }
     }
 
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR1)
     private Bitmap getBitmapFromMemCache(String key) {
         return mMemoryCache.get(key);
     }

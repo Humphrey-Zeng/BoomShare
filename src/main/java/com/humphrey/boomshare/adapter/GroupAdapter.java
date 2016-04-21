@@ -71,7 +71,7 @@ public class GroupAdapter extends BaseAdapter {
             convertView.setTag(viewHolder);
         }else{
             viewHolder = (ViewHolder) convertView.getTag();
-            viewHolder.mImageView.setImageResource(R.mipmap.ic_launcher);
+            viewHolder.mImageView.setImageResource(R.mipmap.bg_default);
         }
 
         viewHolder.mTextViewTitle.setText(mImageBean.getFolderName());
@@ -92,7 +92,7 @@ public class GroupAdapter extends BaseAdapter {
         if (bitmap != null){
             viewHolder.mImageView.setImageBitmap(bitmap);
         }else{
-            viewHolder.mImageView.setImageResource(R.mipmap.ic_launcher);
+            viewHolder.mImageView.setImageResource(R.mipmap.bg_default);
         }
 
         return convertView;

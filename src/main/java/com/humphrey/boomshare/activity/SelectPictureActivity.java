@@ -4,10 +4,12 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -22,7 +24,10 @@ import com.humphrey.boomshare.R;
 import com.humphrey.boomshare.adapter.ChildAdapter;
 import com.humphrey.boomshare.bean.NoteInfo;
 import com.humphrey.boomshare.database.NotesInfoDAO;
+import com.humphrey.boomshare.utils.NativeImageLoader;
+import com.lidroid.xutils.BitmapUtils;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.RequestCreator;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -32,6 +37,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.humphrey.boomshare.utils.GlobalUtils.getNoteCoverFolderPath;
 import static com.humphrey.boomshare.utils.GlobalUtils.getNotePicturesFolderPath;
 
 public class SelectPictureActivity extends Activity implements View.OnClickListener {
@@ -152,26 +158,32 @@ public class SelectPictureActivity extends Activity implements View.OnClickListe
         pbCreatingNote.setVisibility(View.VISIBLE);
 
         new Thread() {
-            private Bitmap bitmap;
+            private FileOutputStream fileOutputStream;
+            private Bitmap mBitmap;
 
             @Override
             public void run() {
 
                 for (int i = 0; i < selectList.size(); i++) {
 
-                    String path = selectList.get(i);
+                    final String path = selectList.get(i);
 
                     try {
-                        bitmap = Picasso.with(SelectPictureActivity.this).load(new File(path))
-                                .get();
+                        mBitmap = Picasso.with(SelectPictureActivity.this).load(new
+                                File(path)).get();
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
 
                     ByteArrayOutputStream os = new ByteArrayOutputStream();
-                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, os);
+                    mBitmap.compress(Bitmap.CompressFormat.JPEG, 100, os);
 
                     createPictureSaveFile(os.toByteArray(), name, i);
+
+                    if (!mBitmap.isRecycled()) {
+                        mBitmap.recycle();
+                        System.gc();
+                    }
 
                     try {
                         os.close();
@@ -189,22 +201,42 @@ public class SelectPictureActivity extends Activity implements View.OnClickListe
 
                 File saveFile = new File(path, pictureNum + "");
 
-                if (pictureNum == 0 && saveFile.getParentFile().exists()){
+                if (pictureNum == 0 && saveFile.getParentFile().exists()) {
 
                     File parentFile = saveFile.getParentFile();
                     File[] childFiles = parentFile.listFiles();
 
-                    for (int i = 0; i < childFiles.length; i++){
+                    for (int i = 0; i < childFiles.length; i++) {
                         childFiles[i].delete();
                     }
                 }
 
-                if (!saveFile.getParentFile().exists()){
+                if (!saveFile.getParentFile().exists()) {
                     saveFile.getParentFile().mkdirs();
                 }
 
+                if (pictureNum == 0) {
+                    String coverPath = getNoteCoverFolderPath();
+                    File saveCoverFile = new File(coverPath, name + "");
+
+                    if (!saveCoverFile.getParentFile().exists()) {
+                        saveCoverFile.getParentFile().mkdirs();
+                    }
+
+                    FileOutputStream coverFileOutputStream;
+                    try {
+                        coverFileOutputStream = new FileOutputStream(saveCoverFile);
+                        coverFileOutputStream.write(picture);
+                        coverFileOutputStream.close();
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+
                 try {
-                    FileOutputStream fileOutputStream = new FileOutputStream(saveFile);
+                    fileOutputStream = new FileOutputStream(saveFile);
                     fileOutputStream.write(picture);
                     fileOutputStream.close();
                 } catch (FileNotFoundException e) {
