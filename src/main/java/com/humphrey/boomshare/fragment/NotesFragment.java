@@ -28,6 +28,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.humphrey.boomshare.utils.GlobalUtils.SELECT_COVER;
 import static com.humphrey.boomshare.utils.GlobalUtils.getNoteCoverFolderPath;
 import static com.humphrey.boomshare.utils.GlobalUtils.getNotePicturesFolderPath;
 
@@ -38,7 +39,7 @@ public class NotesFragment extends BaseFragment implements View.OnClickListener 
 
     private List<NoteInfo> notesInfoList;
     private DragGridView gvNotesShelf;
-    private DragAdapter adapter;
+    public DragAdapter adapter;
     private LinearLayout llNoteEdit;
     private Button btnNoteDelete;
     private Button btnNoteChangeCover;
@@ -158,7 +159,9 @@ public class NotesFragment extends BaseFragment implements View.OnClickListener 
     private void deleteNoteCoverInNative(String name) {
         String path = getNoteCoverFolderPath();
         File coverFile = new File(path, name);
-        coverFile.delete();
+        if (coverFile.exists()) {
+            coverFile.delete();
+        }
     }
 
 }

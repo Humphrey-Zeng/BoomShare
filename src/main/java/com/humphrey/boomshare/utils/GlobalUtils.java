@@ -8,6 +8,10 @@ import java.io.File;
  * Created by Humphrey on 2016/4/1.
  */
 public class GlobalUtils {
+
+    public static final int SELECT_PICTURE = 0;
+    public static final int SELECT_COVER = 1;
+
     public static String getNotePicturesFolderPath(String folderName) {
 
         String path = "";

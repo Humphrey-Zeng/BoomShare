@@ -1,13 +1,10 @@
 package com.humphrey.boomshare.adapter;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Point;
-import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
-import android.util.LruCache;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,15 +18,12 @@ import com.humphrey.boomshare.R;
 import com.humphrey.boomshare.activity.HomeActivity;
 import com.humphrey.boomshare.bean.NoteInfo;
 import com.humphrey.boomshare.database.NotesInfoDAO;
-import com.humphrey.boomshare.utils.CacheUtils;
 import com.humphrey.boomshare.utils.NativeImageLoader;
 import com.humphrey.boomshare.view.DragGridView;
 import com.humphrey.boomshare.view.DragGridViewInterface;
 import com.humphrey.boomshare.view.MyImageView;
-import com.squareup.picasso.Picasso;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -125,26 +119,7 @@ public class DragAdapter extends BaseAdapter implements DragGridViewInterface {
             });
             if (bitmap != null){
                 ivNoteCover.setImageBitmap(bitmap);
-            }else{
-                ivNoteCover.setImageResource(R.drawable.cover);
             }
-//            if (bitmap == null){
-//                new Thread(){
-//                    @Override
-//                    public void run() {
-//                        try {
-//                            mBitmap = Picasso.with(mActivity).load(coverFile).get();
-//                            CacheUtils.getInstance().addBitmapWithPathToCache(path, mBitmap);
-//
-//                            Message msg = mHandler.obtainMessage();
-//                            msg.obj = ivNoteCover;
-//                            mHandler.sendMessage(msg);
-//                        } catch (IOException e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
-//                };
-//            }
         } else {
             ivNoteCover.setImageResource(R.drawable.cover);
         }

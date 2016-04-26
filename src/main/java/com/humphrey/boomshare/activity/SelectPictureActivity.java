@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import com.humphrey.boomshare.R;
 import com.humphrey.boomshare.adapter.ChildAdapter;
+import com.humphrey.boomshare.adapter.CoverAdapter;
 import com.humphrey.boomshare.bean.NoteInfo;
 import com.humphrey.boomshare.database.NotesInfoDAO;
 import com.humphrey.boomshare.utils.NativeImageLoader;
@@ -37,6 +38,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.humphrey.boomshare.utils.GlobalUtils.SELECT_COVER;
+import static com.humphrey.boomshare.utils.GlobalUtils.SELECT_PICTURE;
 import static com.humphrey.boomshare.utils.GlobalUtils.getNoteCoverFolderPath;
 import static com.humphrey.boomshare.utils.GlobalUtils.getNotePicturesFolderPath;
 
@@ -46,10 +49,12 @@ public class SelectPictureActivity extends Activity implements View.OnClickListe
     private List<String> list;
     private List<String> selectList;
     private ChildAdapter adapter;
-    private static int mCount;
+    private CoverAdapter coverAdapter;
     private Button tvSelectPictureOK;
     private Button tvSelectPictureCancel;
     private ProgressBar pbCreatingNote;
+    private int selectType;
+    private String coverPath;
 
     private Handler handler = new Handler() {
         @Override
@@ -62,7 +67,13 @@ public class SelectPictureActivity extends Activity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_select_picture);
+        selectType = getIntent().getIntExtra("selectType", -1);
+        if (selectType == SELECT_COVER) {
+            setContentView(R.layout.activity_select_cover);
+        } else {
+            setContentView(R.layout.activity_select_picture);
+        }
+
 
         mGridView = (GridView) findViewById(R.id.gv_select_photo);
         list = getIntent().getStringArrayListExtra("data");
@@ -71,10 +82,35 @@ public class SelectPictureActivity extends Activity implements View.OnClickListe
         tvSelectPictureCancel = (Button) findViewById(R.id.btn_select_picture_cancel);
         pbCreatingNote = (ProgressBar) findViewById(R.id.pb_creating_note);
 
-        adapter = new ChildAdapter(this, list, mGridView, rlSelectPicture, tvSelectPictureOK);
-        mGridView.setAdapter(adapter);
-        mCount = 0;
-
+        if (selectType == SELECT_PICTURE) {
+            adapter = new ChildAdapter(this, list, mGridView, rlSelectPicture, tvSelectPictureOK);
+            tvSelectPictureOK.setOnClickListener(this);
+            tvSelectPictureCancel.setOnClickListener(this);
+            mGridView.setAdapter(adapter);
+        } else {
+            coverAdapter = new CoverAdapter(this, list, mGridView, rlSelectPicture, tvSelectPictureOK);
+            mGridView.setAdapter(coverAdapter);
+            tvSelectPictureOK.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    coverPath = coverAdapter.getCoverPath();
+                    Intent intent = new Intent();
+                    intent.putExtra("coverPath", coverPath);
+                    setResult(selectType, intent);
+                    finish();
+                }
+            });
+            tvSelectPictureCancel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent();
+                    coverPath = null;
+                    intent.putExtra("coverPath", coverPath);
+                    setResult(selectType, intent);
+                    finish();
+                }
+            });
+        }
         mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -83,9 +119,6 @@ public class SelectPictureActivity extends Activity implements View.OnClickListe
                 startActivity(intent);
             }
         });
-
-        tvSelectPictureOK.setOnClickListener(this);
-        tvSelectPictureCancel.setOnClickListener(this);
     }
 
 
@@ -246,5 +279,16 @@ public class SelectPictureActivity extends Activity implements View.OnClickListe
                 }
             }
         }.start();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (selectType == SELECT_COVER){
+            Intent intent = new Intent();
+            coverPath = null;
+            intent.putExtra("coverPath", coverPath);
+            setResult(selectType, intent);
+        }
+        super.onBackPressed();
     }
 }

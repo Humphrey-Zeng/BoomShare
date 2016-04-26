@@ -18,6 +18,7 @@ import android.widget.GridView;
 import com.humphrey.boomshare.R;
 import com.humphrey.boomshare.adapter.GroupAdapter;
 import com.humphrey.boomshare.bean.ImageBean;
+import com.humphrey.boomshare.utils.GlobalUtils;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -39,6 +40,7 @@ public class SelectFolderActivity extends Activity implements View.OnClickListen
     private GroupAdapter adapter;
     private GridView mGroupGridView;
     private Button btnCancel;
+    private int selectType;
 
     private Handler mHandler = new Handler() {
         @Override
@@ -82,6 +84,8 @@ public class SelectFolderActivity extends Activity implements View.OnClickListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_folder);
 
+        selectType = getIntent().getIntExtra("selectType", -1);
+
         mGroupGridView = (GridView) findViewById(R.id.gv_select_picture);
         btnCancel = (Button) findViewById(R.id.btn_cancel_select_folder);
 
@@ -94,7 +98,8 @@ public class SelectFolderActivity extends Activity implements View.OnClickListen
                 List<String> childList = mGroupMap.get(list.get(position).getFolderName());
                 Intent intent = new Intent(SelectFolderActivity.this, SelectPictureActivity.class);
                 intent.putStringArrayListExtra("data", (ArrayList<String>) childList);
-                startActivity(intent);
+                intent.putExtra("selectType", selectType);
+                startActivityForResult(intent, selectType);
             }
         });
     }
@@ -150,4 +155,24 @@ public class SelectFolderActivity extends Activity implements View.OnClickListen
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == resultCode && requestCode == GlobalUtils.SELECT_COVER) {
+            setResult(resultCode, data);
+            if (data.getStringExtra("coverPath") != null) {
+                finish();
+            }
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (selectType == GlobalUtils.SELECT_COVER) {
+            Intent intent = new Intent();
+            String coverPath = null;
+            intent.putExtra("coverPath", coverPath);
+            setResult(selectType, intent);
+        }
+        super.onBackPressed();
+    }
 }

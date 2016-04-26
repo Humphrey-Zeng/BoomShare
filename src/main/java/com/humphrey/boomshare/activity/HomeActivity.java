@@ -28,6 +28,9 @@ import com.humphrey.boomshare.fragment.NotesFragment;
 import com.humphrey.boomshare.fragment.PickMeUpFragment;
 import com.humphrey.boomshare.fragment.WorkAndRestFragment;
 
+import static com.humphrey.boomshare.utils.GlobalUtils.SELECT_COVER;
+import static com.humphrey.boomshare.utils.GlobalUtils.SELECT_PICTURE;
+
 public class HomeActivity extends AppCompatActivity implements View.OnClickListener {
 
     public static final int NAV_NOTES = 0;
@@ -99,6 +102,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         //noinspection SimplifiableIfStatement
         if (id == R.id.option_visit_camera) {
             Intent intent = new Intent(this, SelectFolderActivity.class);
+            intent.putExtra("selectType", SELECT_PICTURE);
             startActivity(intent);
             return true;
         }
@@ -251,4 +255,5 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             isHomepage = false;
         }
     }
+
 }

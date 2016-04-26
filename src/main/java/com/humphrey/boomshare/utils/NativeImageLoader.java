@@ -49,7 +49,9 @@ public class NativeImageLoader {
             @Override
             public void handleMessage(Message msg) {
                 super.handleMessage(msg);
-                mCallBack.onImageLoader((Bitmap) msg.obj, path);
+                if (mCallBack != null) {
+                    mCallBack.onImageLoader((Bitmap) msg.obj, path);
+                }
             }
         };
 
@@ -102,7 +104,7 @@ public class NativeImageLoader {
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR1)
     private void addBitmapToMemoryCache(String key, Bitmap bitmap) {
-        if (getBitmapFromMemCache(key) == null && bitmap != null) {
+        if (bitmap != null) {
             mMemoryCache.put(key, bitmap);
         }
     }
@@ -112,7 +114,11 @@ public class NativeImageLoader {
         return mMemoryCache.get(key);
     }
 
-    public interface NativeImageCallBack{
+    public void clearCacheInNative(){
+        mMemoryCache.evictAll();
+    }
+
+    public interface NativeImageCallBack {
         public void onImageLoader(Bitmap bitmap, String path);
     }
 }
